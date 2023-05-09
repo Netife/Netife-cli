@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netife-cli", "Netife-cli\Netife-cli.csproj", "{FCFC85CC-A33D-44A3-95AD-6E0AC52ECED0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCFC85CC-A33D-44A3-95AD-6E0AC52ECED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCFC85CC-A33D-44A3-95AD-6E0AC52ECED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCFC85CC-A33D-44A3-95AD-6E0AC52ECED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCFC85CC-A33D-44A3-95AD-6E0AC52ECED0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
