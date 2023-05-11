@@ -1,10 +1,14 @@
 ﻿using Netife_cli.Services;
 using NetifeMessage;
+using Terminal.Gui;
 
 namespace Netife_cli;
 
 public static class Commander
 {
+    public static Action<string> Write;
+    
+    public static Action<string> WriteLine;
     public static void Command(string cmd)
     {
         var header = cmd.Split(" ")[0];
@@ -13,6 +17,7 @@ public static class Commander
         {
             case "quit":
                 End();
+                Application.Shutdown();
                 break;
             case "mode":
                 if (TryInjectParams(cmd, 1, out paras))
@@ -21,7 +26,7 @@ public static class Commander
                 }
                 break;
             default:
-                Console.WriteLine("Missing command match, please check your command.");
+                WriteLine("Missing command match, please check your command.");
                 break;
         }
     }
@@ -43,10 +48,10 @@ public static class Commander
                     res.DstIpAddr = sp.DstIpAddr;
                     res.DstIpPort = sp.DstIpPort;
                     res.ResponseText = sp.RawText;
-                    Console.Write($"\n[Netife] Catch Connection to {sp.DstIpAddr}:80, from {sp.Pid}\nNetife >>>");
+                    Write($"Catch Connection to {sp.DstIpAddr}:80, from {sp.Pid} with content {sp.RawText}\n");
                     return res;
                 };
-                Console.WriteLine("[Netife]Change to Listen Mode");
+                WriteLine("Change to Listen Mode");
                 break;
         }
     }
