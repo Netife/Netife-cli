@@ -60,7 +60,7 @@ public static class Commander
                     res.DstIpAddr = sp.DstIpAddr;
                     res.DstIpPort = sp.DstIpPort;
                     res.ResponseText = sp.RawText;
-                    Write($"Catch Connection to {sp.DstIpAddr}:80, from {sp.Pid} with content {sp.RawText}\n");
+                    Write($"Catch Connection to {sp.DstIpAddr}:80, from {sp.Pid} with content\n {sp.RawText}\n");
                     return res;
                 };
                 WriteLine("Change to Listen Mode");
