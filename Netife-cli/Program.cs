@@ -1,9 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Grpc.Core;
+using Grpc.Net.Client;
 using Netife_cli;
 using Netife_cli.Model;
 using Netife_cli.Services;
+using NetifeMessage;
 using Terminal.Gui;
 
 
@@ -63,10 +65,13 @@ var label = new Label("Netife >>>")
 };
 
 text.Text = "Welcome to use Netife-cli.\nNetife Cli: v1.0.0 Beta\nNetife Cli will ensure its relative components updated.\n" +
-                "Trying to build running server according to config...\nYou can enter command in the bottom of the Console.";
+                "Trying to build running server according to config...\nYou can enter command in the bottom of the Console.\n";
 
 Commander.Write = sp => { text.Text += $"[{DateTime.Now:HH:mm:ss}]" + sp; text.MoveEnd(); Application.Refresh();};
 Commander.WriteLine = sp => { text.Text += $"[{DateTime.Now:HH:mm:ss}]" + sp + "\n"; text.MoveEnd(); Application.Refresh(); };
+Commander.Client =
+    new NetifeService.NetifeServiceClient(
+        GrpcChannel.ForAddress(configuration.DispatcherHost.Replace("0.0.0.0", "http://localhost") + ":" + configuration.DispatcherPort));
 
 input.KeyPress += sp =>
 {

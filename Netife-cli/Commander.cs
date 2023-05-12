@@ -9,6 +9,8 @@ public static class Commander
     public static Action<string> Write;
     
     public static Action<string> WriteLine;
+
+    public static NetifeService.NetifeServiceClient Client;
     public static void Command(string cmd)
     {
         var header = cmd.Split(" ")[0];
@@ -18,12 +20,22 @@ public static class Commander
             case "quit":
                 End();
                 Application.Shutdown();
+                Environment.Exit(0);
                 break;
             case "mode":
                 if (TryInjectParams(cmd, 1, out paras))
                 {
                     ModeChange(paras);
                 }
+                break;
+            case "command":
+                var commandRes = RequestRemoteCommand(cmd.Substring(8, cmd.Length - 8));
+                if (string.IsNullOrEmpty(commandRes))
+                {
+                    WriteLine("Error in command params or undefined command");
+                    break;
+                }
+                WriteLine("[PluginBack]" + commandRes);
                 break;
             default:
                 WriteLine("Missing command match, please check your command.");
@@ -62,5 +74,58 @@ public static class Commander
         var num = line.Count() - 1;
         paras = line.Skip(1).ToArray();
         return num >= count;
+    }
+    
+    private static string RequestRemoteCommand(string rawCommand)
+    {
+        var request = new NetifePluginCommandRequest();
+        
+        var paras = SplitWithoutBlank(rawCommand);
+
+        request.CommandPrefix = paras[0];
+        request.Params.AddRange(paras);
+        NetifePluginCommandResponse? res;
+        try
+        {
+            res = Client.Command(request);
+        }
+        catch (Exception e)
+        {
+            return string.Empty;
+        }
+        if (res.Status)
+        {
+            return res.Result;
+        }
+        return string.Empty;
+    }
+
+    private static List<string> SplitWithoutBlank(string rawText)
+    {
+        var split = rawText.Trim().Split(' ');
+
+        var result = new List<string>();
+        var current = "";
+
+        foreach (var segment in split)
+        {
+            current += segment;
+            if (current.Count(c => c == '"') % 2 == 0)
+            {
+                result.Add(current.Trim().Trim('"'));
+                current = "";
+            }
+            else
+            {
+                current += " ";
+            }
+        }
+
+        if (!string.IsNullOrEmpty(current))
+        {
+            result.Add(current.Trim().Trim('"'));
+        }
+
+        return result.ToList();
     }
 }
