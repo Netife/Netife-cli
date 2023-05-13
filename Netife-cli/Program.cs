@@ -11,7 +11,6 @@ using Terminal.Gui;
 
 
 var configuration = new RuntimeConfiguration();
-CliHelper.BuildServer(configuration);
 
 new Server
 {
@@ -69,6 +68,9 @@ text.Text = "Welcome to use Netife-cli.\nNetife Cli: v1.0.0 Beta\nNetife Cli wil
 
 Commander.Write = sp => { text.Text += $"[{DateTime.Now:HH:mm:ss}]" + sp; text.MoveEnd(); Application.Refresh();};
 Commander.WriteLine = sp => { text.Text += $"[{DateTime.Now:HH:mm:ss}]" + sp + "\n"; text.MoveEnd(); Application.Refresh(); };
+CliHelper.WriteDispatcher = sp => { text.Text += sp + "\n"; text.MoveEnd(); Application.Refresh(); };
+CliHelper.BuildServer(configuration);
+
 Commander.Client =
     new NetifeService.NetifeServiceClient(
         GrpcChannel.ForAddress(configuration.DispatcherHost.Replace("0.0.0.0", "http://localhost") + ":" + configuration.DispatcherPort));

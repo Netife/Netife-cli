@@ -9,6 +9,8 @@ public static class Commander
     public static Action<string> Write;
     
     public static Action<string> WriteLine;
+    
+
 
     public static NetifeService.NetifeServiceClient Client;
     public static void Command(string cmd)
@@ -64,6 +66,18 @@ public static class Commander
                     return res;
                 };
                 WriteLine("Change to Listen Mode");
+                break;
+            case "silent":
+                FrontendService.action = sp =>
+                {
+                    var res = new NetifeProbeResponse();
+                    res.Uuid = sp.Uuid;
+                    res.DstIpAddr = sp.DstIpAddr;
+                    res.DstIpPort = sp.DstIpPort;
+                    res.ResponseText = sp.RawText;
+                    return res;
+                };
+                WriteLine("Change to Silent Mode");
                 break;
         }
     }
